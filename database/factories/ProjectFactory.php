@@ -21,7 +21,7 @@ class ProjectFactory extends Factory
         return [
             "project_title" => fake()->sentence(10),
             "description" => fake()->text(),
-            "deadline" => fake()->dateTimeInInterval('+1 week', '+3 days'),
+            "deadline" => fake()->dateTimeInInterval('+1 week', '+3 days')->format('Y-m-d H:i:s'),
             "status" => Task::STATUS_IN_PROGRESS,
             "priority" => Task::PRIORITY_NORMAL
         ];

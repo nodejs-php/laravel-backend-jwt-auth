@@ -22,6 +22,10 @@ class Project extends Model
         "status",
         "priority"
     ];
+    protected $casts = [
+        'deadline' => 'datetime:Y-m-d',
+    ];
+
 
     public function tasks(): HasMany
     {
@@ -31,5 +35,17 @@ class Project extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function toArray(array $fields = []): array
+    {
+        $original = parent::toArray();
+
+        if (empty($fields)) {
+            return $original;
+        }
+
+
+        return array_intersect_key($original, array_flip($fields));
     }
 }
