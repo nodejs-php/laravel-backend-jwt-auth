@@ -10,6 +10,12 @@ class Task extends Model
 {
     use HasFactory;
 
+    const STATUS_IN_PROGRESS = 'В прогрессе';
+    const STATUS_COMPLETED = 'Закончено';
+    const STATUS_OVERDUE = 'Просрочена';
+    const PRIORITY_NORMAL = 'Нормальный';
+    const PRIORITY_URGENT = 'Срочно';
+
     protected $fillable = [
         "project_id",
         "user_id",

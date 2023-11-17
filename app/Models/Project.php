@@ -34,6 +34,7 @@ class Project extends Model
     }
 
     public function files(): HasMany
+
     {
         return $this->hasMany(File::class, "project_id");
     }
