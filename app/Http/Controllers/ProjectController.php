@@ -58,13 +58,11 @@ class ProjectController extends Controller
 
     public function show($id): Model|Collection|Builder|array
     {
-
-        $project = Project::with("department", "tasks", "files")->find($id);
+        $project = Project::with(  "tasks" )->find($id);
         $projectAssignees = [];
 
         foreach ($project->tasks as $task) {
-
-            $user = User::with('user')->find($task->user_id);
+            $user = User::find($task->user_id);
             $task['assignee'] = $user;
 
             if (!in_array($task->assignee, $projectAssignees)) {
@@ -128,28 +126,22 @@ class ProjectController extends Controller
     {
         try {
             $project = Project::find($id);
-            $project->update([
-                "project_title" => $request->project_title,
-                "department_id" => $request->department_id,
-                "description" => $request->description,
-                "deadline" => date('Y-m-d', strtotime($request->deadline)),
-                "priority" => $request->priority
-            ]);
+            $project->update($request->all());
 
             return response([
-                "data" => Project::with("department", "tasks")->find($id),
-                "message" => "Project has been updated",
-            ]);
+                "data" => $project,
+                "message" => "Project has been updated."
+            ], 201);
 
-        } catch (\Throwable $th) {
+
+        } catch (\Exception $e) {
             $response = [
                 "status" => 500,
                 "message" => "Something went wrong",
-                "error" => $th->getMessage()
+                "error" => $e->getMessage()
             ];
 
             return response()->json($response, 500);
         }
-
     }
 }

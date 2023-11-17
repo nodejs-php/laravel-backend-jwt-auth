@@ -36,16 +36,4 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function toArray(array $fields = []): array
-    {
-        $original = parent::toArray();
-
-        if (empty($fields)) {
-            return $original;
-        }
-
-
-        return array_intersect_key($original, array_flip($fields));
-    }
 }
