@@ -32,10 +32,4 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function files(): HasMany
-
-    {
-        return $this->hasMany(File::class, "project_id");
-    }
 }

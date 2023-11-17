@@ -19,9 +19,7 @@ class ProjectController extends Controller
 {
     public function index(): Collection|array
     {
-        $projects = Project::with("department", "tasks", "files")->get();
-        $tasks = Task::with('User')->get();
-
+        $projects = Project::with( "tasks")->get();
 
         foreach ($projects as $project) {
             $projectAssignees = [];
@@ -30,7 +28,7 @@ class ProjectController extends Controller
 
             foreach ($tasks as $task) {
 
-                $user = User::with('user')->find($task->user_id);
+                $user = User::find($task->user_id);
 
                 if (!in_array($user, $projectAssignees)) {
 
@@ -40,8 +38,7 @@ class ProjectController extends Controller
                     }
                 }
 
-                if ($task->status == "Completed") {
-
+                if ($task->status == Task::STATUS_COMPLETED) {
                     $completeTasks[] = $task;
                 }
             }
@@ -57,7 +54,6 @@ class ProjectController extends Controller
             }
 
             $project['assignees'] = $projectAssignees;
-
 
         }
 
