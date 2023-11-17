@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
+use App\Models\Project;
+use App\Models\Task;
+use App\Models\User;
+use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -9,17 +14,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\Project;
-use App\Models\User;
-use App\Models\File;
-use App\Models\Task;
 use Illuminate\Http\Response;
+use Throwable;
 
 class ProjectController extends Controller
 {
     public function index(): Collection|array
     {
-        $projects = Project::with( "tasks")->get();
+        $projects = Project::with("tasks")->get();
 
         foreach ($projects as $project) {
             $projectAssignees = [];
@@ -58,7 +60,7 @@ class ProjectController extends Controller
 
     public function show($id): Model|Collection|Builder|array
     {
-        $project = Project::with(  "tasks" )->find($id);
+        $project = Project::with("tasks")->find($id);
         $projectAssignees = [];
 
         foreach ($project->tasks as $task) {
@@ -87,7 +89,7 @@ class ProjectController extends Controller
             ], 201);
 
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = [
                 "status" => 500,
                 "message" => "Something went wrong",
@@ -110,7 +112,7 @@ class ProjectController extends Controller
             ], 204);
 
 
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $response = [
                 "status" => 500,
                 "message" => "Something went wrong",
@@ -134,7 +136,7 @@ class ProjectController extends Controller
             ], 201);
 
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = [
                 "status" => 500,
                 "message" => "Something went wrong",

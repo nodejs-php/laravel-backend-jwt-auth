@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
-use App\Models\user;
 use App\Models\Task;
+use App\Models\user;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Throwable;
 
 class TaskController extends Controller
 {
@@ -45,7 +47,7 @@ class TaskController extends Controller
                 $task['progress'] = 0;
             }
 
-        };
+        }
 
         return $tasks;
 
@@ -72,7 +74,7 @@ class TaskController extends Controller
                 $task,
                 "message" => "Task added to this project"
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $response = [
                 "status" => 500,
                 "message" => "Something went wrong",
@@ -103,7 +105,7 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): Application|Response|JsonResponse|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+    public function update(Request $request, $id): Application|Response|JsonResponse|\Illuminate\Contracts\Foundation\Application|ResponseFactory
     {
 
         try {
@@ -121,7 +123,7 @@ class TaskController extends Controller
                 $task,
                 "message" => "Task has been updated",
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $response = [
                 "status" => 500,
                 "message" => "Something went wrong",
