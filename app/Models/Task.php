@@ -11,8 +11,8 @@ class Task extends Model
     use HasFactory;
 
     const STATUS_IN_PROGRESS = 'В прогрессе';
-    const STATUS_COMPLETED = 'Закончено';
-    const STATUS_OVERDUE = 'Просрочена';
+    const STATUS_COMPLETED = 'Завершено';
+    const STATUS_OVERDUE = 'Просрочено';
     const PRIORITY_NORMAL = 'Нормальный';
     const PRIORITY_URGENT = 'Срочно';
 
@@ -25,6 +25,10 @@ class Task extends Model
         "deadline",
         "status",
         "reminder"
+    ];
+
+    protected $casts = [
+        'deadline' => 'datetime:Y-m-d',
     ];
 
     public function project(): BelongsTo

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
 use App\Models\Task;
 use App\Models\user;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -22,58 +21,24 @@ class TaskController extends Controller
      */
     public function index(): Collection|array
     {
-        $tasks = Task::with("project", "user", 'subtasks')->orderBy('deadline')->get();
-
-        foreach ($tasks as $task) {
-            $userID = $task->user->user_id;
-            $user = User::where('id', $userID)->get();
-            $task->user->name = $user[0]->name;
-            $task->user->email = $user[0]->email;
-            $subTasks = $task->subtasks;
-            $completeSubtasks = [];
-
-            foreach ($subTasks as $subtask) {
-
-                if ($subtask->status == "complete") {
-
-                    $completeSubtasks[] = $subtask;
-                }
-            }
-
-            if ($completeSubtasks) {
-                $task['progress'] = (count($completeSubtasks) / count($subTasks)) * 100;
-
-            } else {
-                $task['progress'] = 0;
-            }
-
-        }
+        $tasks = Task::with("project", "user",)->orderBy('deadline')->get();
 
         return $tasks;
-
     }
 
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse|array
+    public function store(Request $request): Application|Response|JsonResponse|\Illuminate\Contracts\Foundation\Application|ResponseFactory
     {
-
         try {
-            $task = Task::create([
-                "task_title" => $request->task_title,
-                "project_id" => $request->project_id,
-                "user_id" => $request->user_id,
-                "description" => $request->description,
-                "deadline" => date('Y-m-d', strtotime($request->deadline)),
-                "priority" => $request->priority ? 1 : 0
-            ]);
+            $task = Task::create($request->all());
 
-            return ([
+            return response([
                 $task,
                 "message" => "Task added to this project"
-            ]);
+            ], 201);
         } catch (Throwable $th) {
             $response = [
                 "status" => 500,
@@ -91,14 +56,7 @@ class TaskController extends Controller
      */
     public function show(string $id): Model|Collection|Builder|array|null
     {
-        $task = Task::with("project", "user", 'subtasks')->find($id);
-        $userID = $task->user->user_id;
-        $user = User::where('id', $userID)->get();
-
-        $task->user['name'] = $user[0]->name;
-        $task->user['email'] = $user[0]->email;
-
-        return $task;
+        return Task::with("project", "user")->find($id);
     }
 
 
@@ -107,17 +65,9 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id): Application|Response|JsonResponse|\Illuminate\Contracts\Foundation\Application|ResponseFactory
     {
-
         try {
             $task = Task::find($id);
-
-            $task->update([
-                "description" => $request->description,
-                "deadline" => date('Y-m-d', strtotime($request->deadline)),
-                "status" => $request->status,
-                "user_id" => $request->user_id,
-                "task_title" => $request->task_title,
-            ]);
+            $task->update($request->all());
 
             return response([
                 $task,

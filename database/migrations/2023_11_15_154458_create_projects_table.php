@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("project_title");
             $table->dateTime("deadline")->nullable()->comment('Крайний срок');
             $table->text("description");
-            $table->enum("status", ['В прогрессе', 'Закончено', 'Просрочена'])->default('В прогрессе');
+            $table->enum("status", ['В прогрессе', 'Завершено', 'Просрочено'])->default('В прогрессе');
             $table->enum("priority", ['Нормальный', 'Срочно'])->default('Нормальный');
             $table->timestamps();
         });

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\File;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
@@ -133,7 +132,7 @@ class ProjectController extends Controller
             return response([
                 "data" => $project,
                 "message" => "Project has been updated."
-            ], 201);
+            ]);
 
 
         } catch (Exception $e) {
