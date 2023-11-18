@@ -11,7 +11,6 @@ use Tests\TestCase;
 class ProjectTest extends TestCase
 {
     use RefreshDatabase;
-/*
     public function testCanGetProjectList(): void
     {
         $user = User::factory()->create();
@@ -124,6 +123,5 @@ class ProjectTest extends TestCase
                 ]
         ]);
     }
-*/
 
 }
