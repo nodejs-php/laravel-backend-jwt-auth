@@ -17,12 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 // protected Routes
-Route::group(["middleware" => ["auth:sanctum"]], function(){
+Route::group(["middleware" => ["auth:sanctum", "cors"]], function(){
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
     Route::get("projects", [ProjectController::class, 'index']);
     Route::get('projects/{project}', [ProjectController::class, 'show']);
     Route::post('projects', [ProjectController::class, 'store']);
@@ -34,11 +33,4 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::delete('tasks/{task}', [TaskController::class, 'destroy']);
     Route::post('tasks', [TaskController::class, 'store']);
     Route::post('tasks/{task}', [TaskController::class, 'update']); //update
-
-
-    Route::get('files', [FileController::class, 'index']);
-    Route::get('files/{file}', [FileController::class, 'show']);
-    Route::post('files', [FileController::class, 'store']);
-    Route::post('files/{file}', [FileController::class, 'update']);  //update
-    Route::delete('files/{file}', [FileController::class, 'delete']);
 });
