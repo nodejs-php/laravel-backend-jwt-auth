@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -18,9 +19,9 @@ use Throwable;
 
 class ProjectController extends Controller
 {
-    public function index(): Collection|array
+    public function index(): LengthAwarePaginator
     {
-        $projects = Project::with("tasks")->get();
+        $projects = Project::with("tasks")->paginate();
 
         foreach ($projects as $project) {
             $projectAssignees = [];

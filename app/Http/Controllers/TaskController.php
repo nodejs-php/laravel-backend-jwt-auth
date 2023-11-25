@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\user;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,11 +20,9 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Collection|array
+    public function index(): LengthAwarePaginator
     {
-        $tasks = Task::with("project", "user",)->orderBy('deadline')->get();
-
-        return $tasks;
+        return Task::with("project", "user",)->orderBy('deadline')->paginate();
     }
 
 
