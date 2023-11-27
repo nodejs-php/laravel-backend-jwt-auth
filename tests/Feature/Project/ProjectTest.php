@@ -21,9 +21,13 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($user)
             ->withSession(['banned' => false])->get('/api/projects');
+
         $response->assertStatus(200);
-        $response->assertJsonCount($numItems);
+        $response->assertJsonCount(13);
         $response->assertJsonStructure([
+            'current_page',
+            'total',
+            'data' =>[
             '*' => [
                 'id',
                 'user_id',
@@ -46,6 +50,7 @@ class ProjectTest extends TestCase
                         'description',
                     ]
                 ]
+            ]
             ]
         ]);
     }

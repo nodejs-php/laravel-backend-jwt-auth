@@ -23,12 +23,14 @@ class TaskTest extends TestCase
         $response = $this->actingAs($user)
             ->withSession(['banned' => false])->get('/api/tasks');
         $response->assertStatus(200);
-        $response->assertJsonCount($numItems * 3);
+        $response->assertJsonCount(13);
         $response->assertJsonStructure([
-            '*' => [
+            'current_page',
+            'total',
+            'data' => ['*' => [
                 'id',
                 'user_id',]
-        ]);
+            ]]);
     }
 
     public function testCanAddTask(): void
@@ -79,7 +81,7 @@ class TaskTest extends TestCase
                 $task->id
             ));
         $response->assertStatus(200);
-      //   dd($response->json());
+        //   dd($response->json());
         $response->assertJsonStructure([
             'id',
             'task_title',

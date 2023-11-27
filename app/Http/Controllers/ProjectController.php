@@ -146,4 +146,14 @@ class ProjectController extends Controller
             return response()->json($response, 500);
         }
     }
+
+
+    public function projectFormOptions(): array
+    {
+        $users = User::query()->select(['id', 'name'])->get();
+        $statusList = ['В прогрессе', 'Завершено', 'Просрочено'];
+        $priorityList = ['Нормальный', 'Срочно'];
+
+        return ['users' => $users, 'priority_list' => $priorityList, 'status_list' => $statusList,];
+    }
 }

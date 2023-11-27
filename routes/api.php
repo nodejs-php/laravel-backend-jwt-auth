@@ -29,11 +29,13 @@ Route::group(["middleware" => ["auth:sanctum", "cors"]], function(){
     Route::get('projects/{project}', [ProjectController::class, 'show']);
     Route::post('projects', [ProjectController::class, 'store']);
     Route::delete('projects/{project}', [ProjectController::class, 'delete']);
-    Route::post('projects/{project}', [ProjectController::class, 'update']);  //update
+    Route::post('projects/{project}', [ProjectController::class, 'update']);
 
     Route::get('tasks', [TaskController::class, 'index']);
     Route::get('tasks/{task}', [TaskController::class, 'show']);
     Route::delete('tasks/{task}', [TaskController::class, 'destroy']);
     Route::post('tasks', [TaskController::class, 'store']);
-    Route::post('tasks/{task}', [TaskController::class, 'update']); //update
+    Route::post('tasks/{task}', [TaskController::class, 'update']);
+
+    Route::get('project-form-options', [ProjectController::class, 'projectFormOptions']);
 });
